@@ -58,7 +58,8 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public ResponseEntity<String> updateProductGroup(Long productGroupId) {
-		Optional<ProductAudit> productAudit = productAuditRepository.findById(productGroupId);
+		Optional<ProductAudit> productAudit = productAuditRepository.findByProductGroupProductGroupId(productGroupId);
+
 		if (productAudit.isPresent()) {
 
 			ProductAudit det = productAudit.get();

@@ -31,7 +31,7 @@ public class ProductController {
 		return productService.getProductGroup();
 	}
 
-	@GetMapping("/getproductDetails/{productNameId}")
+	@GetMapping("/getProductDetails/{productNameId}")
 	public Optional<ProductDetails> getproductDetails(@PathVariable Long productNameId) {
 		return productService.getProductGroupDetails(productNameId);
 	}
@@ -59,4 +59,5 @@ public class ProductController {
 		return productService.getOverviewCount(999L);
 
 	}
+
 }

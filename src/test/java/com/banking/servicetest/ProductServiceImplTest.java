@@ -51,8 +51,20 @@ public class ProductServiceImplTest {
 
 	static Optional<ProductDetails> opd = Optional.empty();
 
+	static ProductAudit pa = new ProductAudit();
+	static List<ProductAudit> lap = new ArrayList<ProductAudit>();
+	
+	ResponseEntity<ProductAudit> expectedvalue1 = new ResponseEntity<ProductAudit>(productAudit, HttpStatus.OK);
+
 	@BeforeClass
 	public static void setUp() {
+
+		pa.setAuditId(1L);
+		pa.setCount(10);
+		pa.setProductGroupName("Savings");
+		pa.setUpdatedDate(new Date());
+		lap.add(pa);
+
 		productAudit.setAuditId(1L);
 		productAudit.setCount(1);
 		productAudit.setProductGroupName("xyz");
@@ -119,6 +131,21 @@ public class ProductServiceImplTest {
 		Mockito.when(productAuditRepository.findById(productAudit.getAuditId())).thenReturn(productAudit1);
 		ResponseEntity<String> actval1 = productServiceImpl.updateOverview();
 		Assert.assertEquals(expectedvalue, actval1);
+
+	}
+
+	@Test
+	public void getProductGroupCount() {
+		Mockito.when(productAuditRepository.findAll()).thenReturn(lap);
+		ResponseEntity<List<ProductAudit>> lpa1 = productServiceImpl.getProductGroupCount();
+		assertEquals("success", "success");
+	}
+
+	@Test
+	public void testGetOverviewCount() {
+		Mockito.when(productAuditRepository.findByAuditId(1L)).thenReturn(productAudit);
+		ResponseEntity<ProductAudit> actval2 = productServiceImpl.getOverviewCount(1L);
+		Assert.assertEquals(expectedvalue1, actval2);
 
 	}
 }
