@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.product.entity.ProductAudit;
 import com.product.entity.ProductDetails;
 
 @Service
@@ -16,6 +17,10 @@ public interface ProductService {
 	public Optional<ProductDetails> getProductGroupDetails(Long productNameId);
 
 	ResponseEntity<String> updateOverview();
-	
+
 	ResponseEntity<String> updateProductGroup(Long productGroupId);
+
+	ResponseEntity<ProductAudit> getProductGroupCount(Long productGroupId);
+
+	ResponseEntity<ProductAudit> getOverviewCount(Long auditId);
 }

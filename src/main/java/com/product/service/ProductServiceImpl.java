@@ -41,20 +41,42 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public ResponseEntity<String> updateOverview() {
-		ProductAudit productAudit = productAuditRepository.findById(1L).get();
-		int count = productAudit.getCount() + 1;
-		productAudit.setCount(count);
-		productAuditRepository.save(productAudit);
+		Optional<ProductAudit> productAudit = productAuditRepository.findById(1L);
+
+		if (productAudit.isPresent()) {
+
+			ProductAudit det = productAudit.get();
+			int count = det.getCount() + 1;
+			det.setCount(count);
+			productAuditRepository.save(det);
+
+		}
 		return new ResponseEntity<String>("Successfully updated", HttpStatus.OK);
 	}
 
 	@Override
 	public ResponseEntity<String> updateProductGroup(Long productGroupId) {
-		ProductAudit productAudit = productAuditRepository.findById(productGroupId).get();
-		int count = productAudit.getCount() + 1;
-		productAudit.setCount(count);
-		productAuditRepository.save(productAudit);
+		Optional<ProductAudit> productAudit = productAuditRepository.findById(productGroupId);
+		if (productAudit.isPresent()) {
 
+			ProductAudit det = productAudit.get();
+			int count = det.getCount() + 1;
+			det.setCount(count);
+			productAuditRepository.save(det);
+		}
 		return new ResponseEntity<String>("Successfully updated", HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<ProductAudit> getProductGroupCount(Long productGroupId) {
+		ProductAudit productAudit = productAuditRepository.findByProductGroupProductGroupId(productGroupId);
+		return new ResponseEntity<ProductAudit>(productAudit, HttpStatus.OK);
+
+	}
+
+	@Override
+	public ResponseEntity<ProductAudit> getOverviewCount(Long auditId) {
+		ProductAudit productAudit = productAuditRepository.findByAuditId(auditId);
+		return new ResponseEntity<ProductAudit>(productAudit, HttpStatus.OK);
 	}
 }
