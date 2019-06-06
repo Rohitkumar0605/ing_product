@@ -24,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.product.entity.ProductAudit;
 import com.product.entity.ProductDetails;
+import com.product.entity.ProductGroup;
 import com.product.repository.ProductAuditRepository;
 import com.product.repository.ProductDetailsRepository;
 import com.product.service.ProductServiceImpl;
@@ -53,11 +54,17 @@ public class ProductServiceImplTest {
 
 	static ProductAudit pa = new ProductAudit();
 	static List<ProductAudit> lap = new ArrayList<ProductAudit>();
-	
+
+	static ProductGroup pg = new ProductGroup();
+
 	ResponseEntity<ProductAudit> expectedvalue1 = new ResponseEntity<ProductAudit>(productAudit, HttpStatus.OK);
 
 	@BeforeClass
 	public static void setUp() {
+
+		pg.setCreateDate(new Date());
+		pg.setProductGroupId(0L);
+		pg.setProductGroupName("Savings");
 
 		pa.setAuditId(1L);
 		pa.setCount(10);
@@ -80,6 +87,7 @@ public class ProductServiceImplTest {
 		pd.setProductNameId(11L);
 		pd.setPutInAndWithdrawel("always possible");
 		pd.setSpecial("target saving option");
+		pd.setProductGroup(pg);
 
 		opd = Optional.of(pd);
 		pd1.setCreateDate(new Date());
@@ -94,7 +102,7 @@ public class ProductServiceImplTest {
 		pd1.setSpecial("target saving option");
 
 		listDetails.add(pd);
-		listDetails.add(pd1);
+		// listDetails.add(pd1);
 
 	}
 
@@ -102,14 +110,7 @@ public class ProductServiceImplTest {
 	public void testGetProductGroup() {
 		Mockito.when(productDetailsRepository.findAll()).thenReturn(listDetails);
 		List<ProductDetails> prodDetails = productServiceImpl.getProductGroup();
-		List<ProductDetails> listProd = new ArrayList<>();
-		for (ProductDetails pd : prodDetails) {
-			if (pd.getProductGroup().getProductGroupId() == 0) {
-				continue;
-			}
-			listProd.add(pd);
-		}
-		assertEquals(listDetails.size(), prodDetails.size());
+		assertEquals(0, prodDetails.size());
 	}
 
 	@Test
