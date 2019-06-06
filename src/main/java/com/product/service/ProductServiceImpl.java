@@ -1,5 +1,6 @@
 package com.product.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,14 +25,15 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<ProductDetails> getProductGroup() {
-
+		List<ProductDetails> listProd = new ArrayList<>();
 		List<ProductDetails> listProductDetails = productDetailsRepository.findAll();
 		for (ProductDetails pd : listProductDetails) {
 			if (pd.getProductGroup().getProductGroupId() == 0) {
 				continue;
 			}
+			listProd.add(pd);
 		}
-		return listProductDetails;
+		return listProd;
 	}
 
 	@Override
@@ -68,9 +70,9 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public ResponseEntity<ProductAudit> getProductGroupCount(Long productGroupId) {
-		ProductAudit productAudit = productAuditRepository.findByProductGroupProductGroupId(productGroupId);
-		return new ResponseEntity<ProductAudit>(productAudit, HttpStatus.OK);
+	public ResponseEntity<List<ProductAudit>> getProductGroupCount() {
+		List<ProductAudit> productAudit = productAuditRepository.findAll();
+		return new ResponseEntity<List<ProductAudit>>(productAudit, HttpStatus.OK);
 
 	}
 

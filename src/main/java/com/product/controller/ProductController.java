@@ -47,10 +47,10 @@ public class ProductController {
 		return productService.updateProductGroup(productGroupId);
 	}
 
-	@GetMapping("/getAuditDetail/{productGroupId}")
-	public ResponseEntity<ProductAudit> getProductGroupCount(@PathVariable Long productGroupId) {
+	@GetMapping("/getAuditDetail")
+	public ResponseEntity<List<ProductAudit>> getProductGroupCount() {
 
-		return productService.getProductGroupCount(productGroupId);
+		return productService.getProductGroupCount();
 
 	}
 

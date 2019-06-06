@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import junit.framework.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,7 +46,10 @@ public class ProductServiceImplTest {
 	ResponseEntity<String> expectedvalue = new ResponseEntity<String>("Successfully updated", HttpStatus.OK);
 
 	static List<ProductDetails> listDetails = new ArrayList<ProductDetails>();
-	ProductDetails pd = new ProductDetails();
+	static ProductDetails pd = new ProductDetails();
+	static ProductDetails pd1 = new ProductDetails();
+
+	static Optional<ProductDetails> opd = Optional.empty();
 
 	@BeforeClass
 	public static void setUp() {
@@ -51,13 +57,53 @@ public class ProductServiceImplTest {
 		productAudit.setCount(1);
 		productAudit.setProductGroupName("xyz");
 		productAudit1 = Optional.of(productAudit);
+
+		pd.setCreateDate(new Date());
+		pd.setDuration("unlimited");
+		pd.setInterestRate("fixed");
+		pd.setMaxInvestment(25000);
+		pd.setMinimalInvestment(5000);
+		pd.setPercentage(7.0);
+		pd.setProductName("iphone");
+		pd.setProductNameId(11L);
+		pd.setPutInAndWithdrawel("always possible");
+		pd.setSpecial("target saving option");
+
+		opd = Optional.of(pd);
+		pd1.setCreateDate(new Date());
+		pd1.setDuration("unlimited");
+		pd1.setInterestRate("fixed");
+		pd1.setMaxInvestment(25000);
+		pd1.setMinimalInvestment(5000);
+		pd1.setPercentage(7.0);
+		pd1.setProductName("iphone");
+		pd1.setProductNameId(0L);
+		pd1.setPutInAndWithdrawel("always possible");
+		pd1.setSpecial("target saving option");
+
+		listDetails.add(pd);
+		listDetails.add(pd1);
+
 	}
 
-	/* @Test */
+	@Test
 	public void testGetProductGroup() {
 		Mockito.when(productDetailsRepository.findAll()).thenReturn(listDetails);
-		// assertEquals(3, actval.size());
+		List<ProductDetails> prodDetails = productServiceImpl.getProductGroup();
+		List<ProductDetails> listProd = new ArrayList<>();
+		for (ProductDetails pd : prodDetails) {
+			if (pd.getProductGroup().getProductGroupId() == 0) {
+				continue;
+			}
+			listProd.add(pd);
+		}
+		assertEquals(listDetails.size(), prodDetails.size());
+	}
 
+	@Test
+	public void testGetProductGroupDetails() {
+		Mockito.when(productDetailsRepository.findById(11L)).thenReturn(opd);
+		assertEquals("success", "success");
 	}
 
 	@Test

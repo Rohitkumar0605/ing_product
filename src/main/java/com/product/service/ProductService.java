@@ -20,7 +20,7 @@ public interface ProductService {
 
 	ResponseEntity<String> updateProductGroup(Long productGroupId);
 
-	ResponseEntity<ProductAudit> getProductGroupCount(Long productGroupId);
+	ResponseEntity<List<ProductAudit>> getProductGroupCount();
 
 	ResponseEntity<ProductAudit> getOverviewCount(Long auditId);
 }
