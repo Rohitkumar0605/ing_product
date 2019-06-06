@@ -82,4 +82,16 @@ public class ProductServiceImpl implements ProductService {
 		ProductAudit productAudit = productAuditRepository.findByAuditId(auditId);
 		return new ResponseEntity<ProductAudit>(productAudit, HttpStatus.OK);
 	}
+
+	@Override
+	public ResponseEntity<List<ProductAudit>> getAlertDetail() {
+		Optional<List<ProductAudit>> listAlertOptional = productAuditRepository.findByCountGreaterThan(500);
+		List<ProductAudit> listAlert = null;
+		if (listAlertOptional.isPresent()) {
+			listAlert = listAlertOptional.get();
+		} else {
+			return new ResponseEntity<List<ProductAudit>>(HttpStatus.GONE);
+		}
+		return new ResponseEntity<List<ProductAudit>>(listAlert, HttpStatus.OK);
+	}
 }

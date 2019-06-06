@@ -23,4 +23,6 @@ public interface ProductService {
 	ResponseEntity<List<ProductAudit>> getProductGroupCount();
 
 	ResponseEntity<ProductAudit> getOverviewCount(Long auditId);
+	
+	public ResponseEntity<List<ProductAudit>> getAlertDetail();
 }

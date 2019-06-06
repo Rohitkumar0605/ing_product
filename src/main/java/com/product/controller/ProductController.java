@@ -60,4 +60,8 @@ public class ProductController {
 
 	}
 
+	@GetMapping("/getAlertDetail")
+	public ResponseEntity<List<ProductAudit>> getAlertDetail() {
+		return productService.getAlertDetail();
+	}
 }

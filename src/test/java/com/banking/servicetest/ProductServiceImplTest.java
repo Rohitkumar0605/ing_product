@@ -53,7 +53,12 @@ public class ProductServiceImplTest {
 	static Optional<ProductDetails> opd = Optional.empty();
 
 	static ProductAudit pa = new ProductAudit();
+	static ProductAudit paa = new ProductAudit();
 	static List<ProductAudit> lap = new ArrayList<ProductAudit>();
+
+	static Optional<List<ProductAudit>> paaudit = Optional.empty();
+
+	ResponseEntity<List<ProductAudit>> expectedvalue5 = new ResponseEntity<List<ProductAudit>>(lap, HttpStatus.OK);
 
 	static ProductGroup pg = new ProductGroup();
 
@@ -71,6 +76,14 @@ public class ProductServiceImplTest {
 		pa.setProductGroupName("Savings");
 		pa.setUpdatedDate(new Date());
 		lap.add(pa);
+
+		paa.setAuditId(7L);
+		paa.setCount(505);
+		paa.setProductGroupName("Savings");
+		paa.setUpdatedDate(new Date());
+		/*
+		 * paaudit. paaudit = Optional.of(paa);
+		 */
 
 		productAudit.setAuditId(1L);
 		productAudit.setCount(1);
@@ -90,6 +103,7 @@ public class ProductServiceImplTest {
 		pd.setProductGroup(pg);
 
 		opd = Optional.of(pd);
+
 		pd1.setCreateDate(new Date());
 		pd1.setDuration("unlimited");
 		pd1.setInterestRate("fixed");
@@ -116,12 +130,13 @@ public class ProductServiceImplTest {
 	@Test
 	public void testGetProductGroupDetails() {
 		Mockito.when(productDetailsRepository.findById(11L)).thenReturn(opd);
-		assertEquals("success", "success");
+		Optional<ProductDetails> pdd = productServiceImpl.getProductGroupDetails(11L);
+		assertEquals(opd, pdd);
 	}
 
 	@Test
 	public void testUpdateOverview() {
-		Mockito.when(productAuditRepository.findById(1L)).thenReturn(productAudit1);
+		// Mockito.when(productAuditRepository.findById(1L)).thenReturn(productAudit1);
 		ResponseEntity<String> actval = productServiceImpl.updateOverview();
 		Assert.assertEquals(expectedvalue, actval);
 
@@ -129,7 +144,7 @@ public class ProductServiceImplTest {
 
 	@Test
 	public void testupdateProductGroup() {
-		Mockito.when(productAuditRepository.findById(productAudit.getAuditId())).thenReturn(productAudit1);
+		// Mockito.when(productAuditRepository.findById(productAudit.getAuditId())).thenReturn(productAudit1);
 		ResponseEntity<String> actval1 = productServiceImpl.updateOverview();
 		Assert.assertEquals(expectedvalue, actval1);
 
@@ -139,7 +154,7 @@ public class ProductServiceImplTest {
 	public void getProductGroupCount() {
 		Mockito.when(productAuditRepository.findAll()).thenReturn(lap);
 		ResponseEntity<List<ProductAudit>> lpa1 = productServiceImpl.getProductGroupCount();
-		assertEquals("success", "success");
+		assertEquals(expectedvalue5, lpa1);
 	}
 
 	@Test
@@ -148,5 +163,12 @@ public class ProductServiceImplTest {
 		ResponseEntity<ProductAudit> actval2 = productServiceImpl.getOverviewCount(1L);
 		Assert.assertEquals(expectedvalue1, actval2);
 
+	}
+
+	@Test
+	public void getAlertDetail() {
+		Mockito.when(productAuditRepository.findByCountGreaterThan(500)).thenReturn(paaudit);
+		ResponseEntity<List<ProductAudit>> lpa1 = productServiceImpl.getAlertDetail();
+		assertEquals(expectedvalue5, lpa1);
 	}
 }
