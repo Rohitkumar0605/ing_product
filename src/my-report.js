@@ -17,6 +17,7 @@ class MyChart extends PolymerElement {
   connectedCallback(){
     super.connectedCallback();
    // this.drawGraph();
+   this.getgetgraphOverView();
     this.getGraphData();
   }
   
@@ -58,12 +59,30 @@ class MyChart extends PolymerElement {
       selectedProductDetails:{
         type:Object,
         value:{}
+      },
+      overviewCount:{
+        type:Object,
+        value:{}
+
       }
       
       
     }
   }
+//graphOverViewAjax,_getgraphOverViewAjaxHandler
+getgetgraphOverView(){
+  let ajaxRef = this.$.graphOverViewAjax;
+  ajaxRef.method = "get"
+  ajaxRef.url = `${this.baseUrl}/getOverviewAuditDetail`,
+  ajaxRef.contentType = "application/json"
+  ajaxRef.generateRequest();
 
+}
+_getgraphOverViewAjaxHandler(event){
+  const response = event.detail.response;
+ this.overviewCount=response.count;
+ alert("Total Over View Count:"+this.overviewCount);
+}
 getGraphData(){
   let ajaxRef = this.$.graphDataAjax;
   ajaxRef.method = "get"
@@ -138,18 +157,28 @@ drawGraph(){
     to see how they are positioned relative to the distributed
     child nodes.
     -->
+    <div>Total Overview Count:[[overviewCount]]</div>
     <div>
       <!-- any children are rendered here -->
-    
-      <div id="pieContainer"  style="margin-top: 54px;margin-left: 49%"><!-- Plotly chart will be drawn inside this DIV --></div>
- 
+     
+  <div id="pieContainer"  style="margin-top: 54px;margin-left: 30%">
+  
+  <!-- Plotly chart will be drawn inside this DIV --></div>
+  
 
-   <iron-ajax
-   id="graphDataAjax"
-   on-response="_getGraphDataHandler"
-   on-error ="_errorHandler"
-   debounce-duration="300">
+  <iron-ajax 
+  id="graphOverViewAjax"
+  on-response="_getgraphOverViewAjaxHandler"
+  on-error ="_errorHandler"
+  debounce-duration="300">
 </iron-ajax>  
+
+  <iron-ajax
+          id="graphDataAjax"
+          on-response="_getGraphDataHandler"
+          on-error ="_errorHandler"
+          debounce-duration="300">
+  </iron-ajax>  
     </div>
     `;
   }
