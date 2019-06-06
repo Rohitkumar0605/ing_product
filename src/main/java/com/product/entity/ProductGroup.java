@@ -17,28 +17,36 @@ public class ProductGroup {
 	private String productGroupName;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDate;
+
 	public Long getProductGroupId() {
 		return productGroupId;
 	}
+
 	public ProductGroup() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
 	public void setProductGroupId(Long productGroupId) {
 		this.productGroupId = productGroupId;
 	}
+
 	public String getProductGroupName() {
 		return productGroupName;
 	}
+
 	public void setProductGroupName(String productGroupName) {
 		this.productGroupName = productGroupName;
 	}
+
 	public Date getCreateDate() {
 		return createDate;
 	}
+
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
+
 	@Override
 	public String toString() {
 		return "ProductGroup [productGroupId=" + productGroupId + ", productGroupName=" + productGroupName
